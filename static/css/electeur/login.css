@@ -1,0 +1,155 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    background: #003C5F; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #003C5F, #000D5F); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(50deg, #003C5F, #000D5F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.content{
+    width: 40%;
+    height: 65%;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 30px 30px;
+    box-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.2), 0 4px 6px -2px rgba(255, 255, 255, 0.5);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+}
+.content h1{
+    line-height: 1.75rem;
+    color: #003C5F;
+}
+.content form{
+    width: 80%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.content form input{
+    width: 100%;
+    background-color: #fafafa;
+    padding: 12px;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    border: 1px solid #eeeeee;
+    outline: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+    transition: all .2s ease;
+}
+.content form input:hover{
+    background-color: #fff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+}
+.content form input:focus{
+    background-color: #fff;
+    border: 1px solid #003C5F;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+}
+.content form button{
+    display: block;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    background-color: #003C5F;
+    color: #ffffff;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    width: 100%;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+}
+.content form button:hover{
+    background-color: #000D5F;
+}
+.content form .error_message{
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: #EF665B;
+
+    display: none;
+    align-items: center;
+    gap: 5px;
+}
+.content form .error_message svg{
+    color: #fff;
+}
+.content form .error_message p{
+    color: #fff;
+    font-size: 14px;
+}
+.content .ecoles{
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    gap: 20px;
+}
+.content .ecoles img{
+    height: 40px;
+    width: auto;
+}
+
+@media only screen and (800px <= width <=1200px){
+    .content{
+        width: 50%;
+        height: 65%;
+    }
+}
+
+@media only screen and (550px <=width < 800px){
+    .content{
+        width: 70%;
+        height: 70%;
+    }
+
+    .content form{
+        width: 90%;
+
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media only screen and (width < 550px){
+    .content{
+        width: 85%;
+        height: 70%;
+    }
+
+    .content form{
+        width: 95%;
+
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription IDSI Vote </title>
+    <link rel="stylesheet" href="../../static/css/electeur/signup.css">
+</head>
+<body>
+    <div class="content">
+        <h1>Inscription</h1>
+        <form action="" method="post">
+            <div class="error_message">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4"/>
+                    <path d="M12 8h.01"/>
+                </svg>
+                <p class="message">An issue occured</p>
+            </div>
+            <div class="inputs">
+                <input type="text" name="nom" id="nom" placeholder="Entrez votre nom">
+                <input type="text" name="prenoms" id="prenoms" placeholder="Entrez votre prénom">
+            </div>
+            <div class="inputs">
+                <select name="genre" id="genre">
+                    <option value="" selected>-- Sélectionner un genre --</option>
+                    <option value="male">Homme</option>
+                    <option value="female">Femme</option>
+                </select>
+                <input type="date" name="datenaiss" id="datenaiss" placeholder="Selectionnez votre date de naissance">
+            </div>
+            <div class="inputs">
+                <input type="tel" name="tel" id="tel" placeholder="Entrez votre numéro de telephone">
+                <input type="email" name="email" id="email" placeholder="Entrez votre email institutionnel">
+            </div>
+            <div class="inputs">
+                <input type="password" name="pass1" id="pass1" placeholder="Entrez votre mot de passe">
+                <input type="password" name="pass2" id="pass2" placeholder="Confirmez votre mot de passe">
+            </div>
+            
+            <button type="submit">S'inscrire</button>
+        </form>
+        <div class="ecoles">
+            <img src="../../static/assets/img/inphb.png" alt="INPHB">
+            <img src="../../static/assets/img/x-poly.png" alt="X-Polytech">
+            <img src="../../static/assets/img/Ensea-logo.png" alt="ENSEA">
+        </div>
+    </div>
+    
+</body>
+</html>

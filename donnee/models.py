@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
 
-import random
+import uuid
 
 # Create your models here.
 
@@ -16,6 +16,18 @@ GENRE_ELECTEUR = [
 def validate_inphb_mail(value):
     if not value.endswith('@inphb.ci'):
         raise ValidationError("Seulement le mail inphb est accepté.")
+    
+class Election(models.Model):
+    titre = models.CharField(max_length=200)
+    description = models.TextField()
+    date_debut = models.DateTimeField()
+    date_fin = models.DateTimeField()
+    active = models.BooleanField(default=True)
+
+
+    def est_ouverte(self):
+        now = timezone.now()
+        return self.active and self.date_debut <= now <= self.date_fin
 
 class Electeur(AbstractUser):
     nom = models.CharField(max_length=50, blank=True)
@@ -40,16 +52,15 @@ class Electeur(AbstractUser):
 
 class Candidat(models.Model):
     nom_complet = models.CharField()
+    election = models.ForeignKey(Election, on_delete=models.CASCADE, default=None)
     photo = models.ImageField(upload_to="static/candidat/")
 
 class Vote(models.Model):
-    id = models.CharField(max_length=50,primary_key=True, unique=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    election = models.ForeignKey(Election, on_delete=models.CASCADE, default=None)
     candidat = models.ForeignKey(Candidat,on_delete=models.DO_NOTHING)
     electeur = models.ForeignKey(Electeur,on_delete=models.DO_NOTHING)
     date_vote = models.DateTimeField(auto_now_add=True)
 
-    def save(self,*args, **kwargs):
-        rand_num = str(random.randint(1000000,9999999))
-        date_now = str(timezone.now())
-        self.id = rand_num + date_now
-        return super().save()
+    class Meta:
+        unique_together = ('election', 'electeur')
