@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code IDSI Vote</title>
+    <link rel="stylesheet" href="{% static 'css/electeur/qr_code.css' %}">
+</head>
+<body>
+    <div class="content" style="width: 60%; height: auto; padding: 40px;">
+        <h1>QR Codes IDSI Vote</h1>
+        <div class="qr-container">
+            <!-- QR Code Signup -->
+            <div class="qr-card">
+                <h2>S'inscrire</h2>
+                <img src="{{ qr_signup_url }}" alt="QR Signup">
+            </div>
+        </div>
+
+        <div class="ecoles" style="margin-top: 30px;">
+            <img src="{% static 'assets/img/inphb.png' %}" alt="INPHB">
+            <img src="{% static 'assets/img/x-poly.png' %}" alt="X-Polytech">
+            <img src="{% static 'assets/img/Ensea-logo.png' %}" alt="ENSEA">
+        </div>
+    </div>
+</body>
+</html>

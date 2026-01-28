@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Vote terminé</title>
+    <link rel="stylesheet" href="{% static "css/electeur/vote_done.css" %}">
+</head>
+<body>
+    <div class="vote-done-container">
+        <div class="vote-done-icon">
+            <!-- icône check -->
+        </div>
+
+        <h1>Vote enregistré</h1>
+        <p>
+            Votre vote a été pris en compte avec succès.<br>
+            Merci pour votre participation.
+        </p>
+
+        <a href="{% url 'vote:logout' %}">Quitter</a>
+
+        <div class="vote-done-ecoles">
+            <img src="{% static 'assets/img/inphb.png' %}">
+            <img src="{% static 'assets/img/x-poly.png' %}">
+            <img src="{% static 'assets/img/Ensea-logo.png' %}">
+        </div>
+    </div>
+</body>
+</html>

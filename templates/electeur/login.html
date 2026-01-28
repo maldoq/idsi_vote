@@ -10,15 +10,22 @@
 <body>
     <div class="content">
         <h1>Connexion</h1>
-        <form action="" method="post">
+        <form action="{% url "vote:login" %}" method="post">
+            {% csrf_token %}
+            {% if error %}
             <div class="error_message">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info">
                     <circle cx="12" cy="12" r="10"/>
                     <path d="M12 16v-4"/>
                     <path d="M12 8h.01"/>
                 </svg>
-                <p class="message">An issue occured</p>
+                <div class="error_message">
+                <p class="message">
+                {{ error }}
+                </p>
+                </div>
             </div>
+            {% endif %}
             <input type="tel" name="tel" id="tel" placeholder="Numero dans le format: XXXXXXXXXX">
             <input type="email" name="email" id="email" placeholder="Email institutionnel">
             <input type="password" name="password" id="password" placeholder="Mot de passe">

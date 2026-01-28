@@ -26,8 +26,10 @@ class Election(models.Model):
 
 
     def est_ouverte(self):
-        now = timezone.now()
-        return self.active and self.date_debut <= now <= self.date_fin
+        now = timezone.localtime(timezone.now())
+        start = timezone.localtime(self.date_debut)
+        end = timezone.localtime(self.date_fin)
+        return start <= now <= end
 
 class Electeur(AbstractUser):
     nom = models.CharField(max_length=50, blank=True)
@@ -51,9 +53,27 @@ class Electeur(AbstractUser):
     REQUIRED_FIELDS = ["emailInst","telephone"]
 
 class Candidat(models.Model):
-    nom_complet = models.CharField()
-    election = models.ForeignKey(Election, on_delete=models.CASCADE, default=None)
-    photo = models.ImageField(upload_to="static/candidat/")
+    nom_complet = models.CharField(max_length=200)
+
+    filiere = models.CharField(
+    max_length=75,
+    null=True,
+    blank=True
+    )
+
+    election = models.ForeignKey(
+    Election,
+    on_delete=models.CASCADE
+    )
+
+    photo = models.ImageField(
+    upload_to="candidat/",
+    null=True,
+    blank=True
+    )
+
+    def __str__(self):
+        return self.nom_complet
 
 class Vote(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
