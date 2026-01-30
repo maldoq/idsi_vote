@@ -2,15 +2,14 @@
 // DONNÉES FICTIVES - RÉSULTATS FINAUX
 // ===========================
 
-const finalResults = [
-    { id: 1, name: "Marie Dubois", votes: 2847 },
-    { id: 2, name: "Jean Martin", votes: 2135 },
-    { id: 3, name: "Sophie Bernard", votes: 1654 },
-    { id: 4, name: "Pierre Lefebvre", votes: 982 },
-    { id: 5, name: "Claire Moreau", votes: 756 }
-];
+// const finalResults = [
+//     { id: 1, name: "Marie Dubois", votes: 2847 },
+//     { id: 2, name: "Jean Martin", votes: 2135 },
+//     { id: 3, name: "Sophie Bernard", votes: 1654 },
+//     { id: 4, name: "Pierre Lefebvre", votes: 982 },
+//     { id: 5, name: "Claire Moreau", votes: 756 }
+// ];
 
-const TOTAL_ELECTEURS = 10000;
 const CLOSURE_DATE = "28 Janvier 2026";
 
 // ===========================

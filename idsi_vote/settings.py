@@ -1,7 +1,16 @@
 from pathlib import Path
 from datetime import datetime
+import dj_database_url
+import environ
+import os
 
 from django.utils.timezone import make_aware
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env()
 
 INSCRIPTION_START = make_aware(datetime(2026, 1, 20, 8, 0, 0))
 INSCRIPTION_END = make_aware(datetime(2026, 1, 30, 18, 0, 0))
@@ -14,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-w716edh**74&gyfi)u*_ypr8zgdql=4r5q6w5#(_c^4kuhklwu'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,10 +91,11 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 AUTH_USER_MODEL = "donnee.Electeur"
@@ -137,9 +148,17 @@ BASE_DIR / "static", # ton dossier principal static/
 # Répertoire où Django va collecter tous les fichiers statiques pour la production
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Render - sécurité supplémentaire
+if not DEBUG:
+    # HTTPS obligatoire sur Render
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 # ----------------------
 # Media files (upload d'images, photos, etc.)
 # ----------------------
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

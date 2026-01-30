@@ -357,6 +357,7 @@ body {
 }
 
 .chart-bar {
+    height: 100%;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -373,7 +374,8 @@ body {
 }
 
 .bar-fill-container {
-    width: 100%;
+    width: 60%;
+    height: 100%;
     background-color: #E5F3FA;
     border-radius: var(--radius-sm);
     overflow: hidden;

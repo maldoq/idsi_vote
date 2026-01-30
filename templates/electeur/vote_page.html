@@ -98,7 +98,9 @@
             <!-- Candidates Grid -->
             <div class="candidates-grid">
                 {% for candidat in candidats %}
-                <div class="candidate-card">
+                <div class="candidate-card"
+                data-name="{{ candidat.nom_complet }}"
+                data-image="{% if candidat.photo %}{{ candidat.photo.url }}{% endif %}">
                     <div class="candidate-header">
                         <div class="candidate-image">
                             {% if candidat.photo %}
@@ -256,6 +258,7 @@
             const modalCandidateDetails = document.getElementById('modalCandidateDetails');
             const modalCandidateAvatar = document.getElementById('modalCandidateAvatar');
             
+            
             let currentForm = null;
 
             // Handle vote button clicks
@@ -273,16 +276,21 @@
                     const candidatePosition = card.querySelector('.candidate-position').textContent;
                     const candidateFiliere = card.querySelector('.candidate-badge span').textContent;
                     const candidateImage = card.querySelector('.candidate-image img');
+                    const candidateImageUrl = card.dataset.image;
+
                     
                     // Update modal content
                     modalCandidateName.textContent = candidateName;
                     modalCandidateDetails.textContent = `${candidateFiliere} - ${candidatePosition}`;
                     
                     // Update avatar if image exists
-                    if (candidateImage) {
-                        modalCandidateAvatar.innerHTML = `<img src="${candidateImage.src}" alt="${candidateName}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+                    if (candidateImageUrl) {
+                        modalCandidateAvatar.innerHTML = `
+                            <img src="${candidateImageUrl}"
+                                alt="${candidateName}"
+                                style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                        `;
                     } else {
-                        // Reset to default SVG if no image
                         modalCandidateAvatar.innerHTML = `
                             <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor">
                                 <path d="M20 20C23.3137 20 26 17.3137 26 14C26 10.6863 23.3137 8 20 8C16.6863 8 14 10.6863 14 14C14 17.3137 16.6863 20 20 20Z"/>

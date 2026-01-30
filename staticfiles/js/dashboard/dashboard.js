@@ -59,24 +59,24 @@ function renderChart() {
         const bar = document.createElement("div");
         bar.className = "chart-bar";
 
-        const value = document.createElement("div");
-        value.className = "bar-value";
-        value.textContent = c.votes;
-
         const fillContainer = document.createElement("div");
         fillContainer.className = "bar-fill-container";
 
         const fill = document.createElement("div");
         fill.className = "bar-fill";
-        fill.style.height = (c.votes / maxVotes * 100) + "%";
+        fill.style.height = Math.max((c.votes / maxVotes * 100), 2) + "%";
+
+        const value = document.createElement("div");
+        value.className = "bar-value";
+        value.textContent = c.votes;
 
         const label = document.createElement("div");
         label.className = "bar-label";
         label.textContent = c.name;
 
         fillContainer.appendChild(fill);
-        bar.appendChild(value);
         bar.appendChild(fillContainer);
+        bar.appendChild(value);
         bar.appendChild(label);
 
         chart.appendChild(bar);
@@ -109,29 +109,24 @@ function renderTopCandidates() {
    WEBSOCKET
 ================================ */
 
-const socket = new WebSocket(
-    "ws://" + window.location.host + "/ws/dashboard/"
-);
+const ws = new WebSocket(`ws://${window.location.host}/ws/dashboard/`);
 
-socket.onopen = () => {
+ws.onopen = () => {
     console.log("✅ WebSocket dashboard connecté");
 };
 
-socket.onmessage = (event) => {
+ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
 
     if (data.type === "votes_update") {
-        // Format attendu :
-        // data.candidats = [{name, votes}]
         candidates = data.candidats;
-
         updateDashboard();
         renderChart();
         renderTopCandidates();
     }
 };
 
-socket.onclose = () => {
+ws.onclose = () => {
     console.warn("❌ WebSocket dashboard fermé");
 };
 
