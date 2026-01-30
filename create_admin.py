@@ -17,7 +17,7 @@ if not User.objects.filter(username=ADMIN_USERNAME).exists():
     User.objects.create_superuser(
         username=ADMIN_USERNAME,
         emailInst=ADMIN_EMAIL,
-        tel=ADMIN_TEL,
+        telephone=ADMIN_TEL,
         password=ADMIN_PASSWORD
     )
     print(f"Superuser {ADMIN_USERNAME} créé avec succès !")

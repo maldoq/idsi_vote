@@ -90,6 +90,14 @@ DATABASES = {
         ssl_require=True
     )
 }
+# Optionnel : fallback pour dev local si DATABASE_URL n'existe pas
+if not DATABASES["default"]:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
 
 AUTH_USER_MODEL = "donnee.Electeur"
 
