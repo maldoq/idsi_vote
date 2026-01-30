@@ -506,6 +506,204 @@ body {
     color: var(--color-text-secondary);
 }
 
+/* === Confirmation Modal === */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-container {
+    background: var(--color-white);
+    border-radius: var(--border-radius-lg);
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+}
+
+.modal-overlay.active .modal-container {
+    transform: scale(1) translateY(0);
+}
+
+/* Modal Header */
+.modal-header {
+    padding: var(--spacing-xl);
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.modal-icon {
+    display: inline-flex;
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-header h3 {
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Modal Body */
+.modal-body {
+    padding: var(--spacing-xl);
+}
+
+.modal-message {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-lg);
+    font-size: 0.95rem;
+}
+
+.modal-candidate-info {
+    background: linear-gradient(135deg, rgba(0, 60, 95, 0.05) 0%, rgba(0, 13, 95, 0.05) 100%);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    border: 2px solid rgba(0, 60, 95, 0.1);
+}
+
+.modal-candidate-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    color: var(--color-primary);
+}
+
+.modal-candidate-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 4px;
+}
+
+.modal-candidate-details {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.modal-warning {
+    background: #FFF3CD;
+    border: 1px solid #FFE69C;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    color: #856404;
+}
+
+.modal-warning svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.modal-warning strong {
+    font-weight: 700;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    background: var(--color-bg);
+    display: flex;
+    gap: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+}
+
+.btn-cancel,
+.btn-confirm {
+    flex: 1;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    border: none;
+}
+
+.btn-cancel {
+    background: var(--color-white);
+    color: var(--color-text-secondary);
+    border: 2px solid var(--color-border);
+}
+
+.btn-cancel:hover {
+    background: var(--color-bg);
+    border-color: var(--color-text-secondary);
+    color: var(--color-text-primary);
+}
+
+.btn-confirm {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: var(--color-white);
+    box-shadow: 0 4px 12px rgba(0, 60, 95, 0.3);
+}
+
+.btn-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 60, 95, 0.4);
+}
+
+.btn-confirm:active,
+.btn-cancel:active {
+    transform: translateY(0);
+}
+
+/* Modal animations */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideUp {
+    from {
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        transform: scale(1) translateY(0);
+    }
+}
+
 /* === Responsive Design === */
 
 /* Tablets (≤ 1024px) */
@@ -580,6 +778,30 @@ body {
     
     .candidate-footer {
         padding: 0 var(--spacing-md) var(--spacing-md);
+    }
+    
+    /* Modal responsive */
+    .modal-container {
+        max-width: 95%;
+    }
+    
+    .modal-header,
+    .modal-body {
+        padding: var(--spacing-lg);
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .btn-cancel,
+    .btn-confirm {
+        width: 100%;
+    }
+    
+    .modal-candidate-info {
+        padding: var(--spacing-md);
     }
 }
 

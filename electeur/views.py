@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 
 from donnee.models import Electeur, Election, Candidat, Vote
+from dashboard.utils import notify_vote_update
 
 # Create your views here.
 def qr_view(request):
@@ -84,12 +85,11 @@ def login_view(request):
 
     # 3️⃣ Traitement du formulaire
     if request.method == "POST":
-        email = request.POST.get("email")
         tel = request.POST.get("tel")
         password = request.POST.get("password")
 
 
-        if not email or not tel or not password:
+        if not tel or not password:
             error = "Tous les champs sont obligatoires."
             return render(request, "electeur/login.html", {"error": error})
 
@@ -99,7 +99,6 @@ def login_view(request):
 
         try:
             electeur = Electeur.objects.get(
-            emailInst=email,
             telephone=telephone
             )
         except Electeur.DoesNotExist:
@@ -261,6 +260,8 @@ def vote_view(request):
         candidat=candidat,
         election=election
         )
+
+        notify_vote_update(election)
 
 
         messages.success(

@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(50deg, #003C5F, #000D5F);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Conteneur principal */
+.vote-done-container {
+    width: 40%;
+    min-height: 55%;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+/* Icône validation */
+.vote-done-icon {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: #E6F4FA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vote-done-icon svg {
+    width: 50px;
+    height: 50px;
+    color: #003C5F;
+}
+
+/* Titre */
+.vote-done-container h1 {
+    color: #003C5F;
+    font-size: 1.8rem;
+    margin-top: 20px;
+}
+
+/* Message */
+.vote-done-container p {
+    color: #444;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+/* Bouton */
+.vote-done-container a {
+    margin-top: 30px;
+    padding: 12px 30px;
+    background-color: #003C5F;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.vote-done-container a:hover {
+    background-color: #000D5F;
+}
+
+/* Logos écoles */
+.vote-done-ecoles {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.vote-done-ecoles img {
+    height: 35px;
+    width: auto;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+    .vote-done-container {
+        width: 55%;
+    }
+}
+
+@media (max-width: 700px) {
+    .vote-done-container {
+        width: 80%;
+        padding: 30px 20px;
+    }
+
+    .vote-done-container h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .vote-done-container {
+        width: 90%;
+    }
+}

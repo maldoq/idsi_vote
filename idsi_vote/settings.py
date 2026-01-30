@@ -4,7 +4,7 @@ from datetime import datetime
 from django.utils.timezone import make_aware
 
 INSCRIPTION_START = make_aware(datetime(2026, 1, 20, 8, 0, 0))
-INSCRIPTION_END = make_aware(datetime(2026, 1, 28, 18, 0, 0))
+INSCRIPTION_END = make_aware(datetime(2026, 1, 30, 18, 0, 0))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "channels",
     'electeur',
     'dashboard',
     'donnee',
@@ -45,6 +46,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 ROOT_URLCONF = 'idsi_vote.urls'
 
@@ -64,6 +67,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'idsi_vote.wsgi.application'
+
+ASGI_APPLICATION = "idsi_vote.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    }
+}
 
 
 # Database

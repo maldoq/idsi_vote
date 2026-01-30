@@ -72,6 +72,9 @@ class Candidat(models.Model):
     blank=True
     )
 
+    def total_votes(self):
+        return Vote.objects.filter(candidat=self).count()
+
     def __str__(self):
         return self.nom_complet
 

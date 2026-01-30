@@ -1,0 +1,339 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres - IDSI Vote</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard/election_settings.css' %}">
+</head>
+<body>
+    <!-- Navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>IDSI Vote</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'dashboard:dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'dashboard:resultats' %}">Résultats</a></li>
+                <li><a href="{% url 'dashboard:election_settings' %}" class="active">Paramètres</a></li>
+                <li><a href="{% url 'dashboard:logout' %}" class="logout">Déconnexion</a></li>
+            </ul>
+            <div class="election-status">
+                <span class="status-indicator {% if election_open %}status-open{% else %}status-closed{% endif %}"></span>
+                <span class="status-text" id="navStatus">{% if election_open %}Élection ouverte{% else %}Élection fermée{% endif %}</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <div class="content-container">
+            <!-- En-tête -->
+            <header class="page-header">
+                <div class="header-text">
+                    <h2 class="page-title">Paramètres de l'Élection</h2>
+                    <p class="page-subtitle">Configuration et gestion complète</p>
+                </div>
+            </header>
+
+            <!-- Grille de sections -->
+            <div class="settings-grid">
+                <!-- Section 1: Informations générales -->
+                <section class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Informations Générales</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="form-group">
+                            <label for="electionTitle">Titre de l'élection</label>
+                            <input type="text" id="electionTitle" value="{{ election.titre }}" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="electionDescription">Description</label>
+                            <textarea id="electionDescription" class="form-textarea" rows="3">{{ election.description }}</textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="startDate">Date de début</label>
+                                <input type="datetime-local" id="startDate" value="{{ election.date_debut|date:'Y-m-d\\TH:i' }}" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="endDate">Date de fin</label>
+                                <input type="datetime-local" id="endDate" value="{{ election.date_fin|date:'Y-m-d\\TH:i' }}" class="form-input">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="saveInfoBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                                <polyline points="17 21 17 13 7 13 7 21"/>
+                                <polyline points="7 3 7 8 15 8"/>
+                            </svg>
+                            <span>Enregistrer les modifications</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Section 2: État de l'élection -->
+                <section class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">État de l'Élection</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="status-display">
+                            <span class="status-label">Statut actuel</span>
+                            <div class="status-badge" id="currentStatusBadge">
+                                <span class="status-dot status-open"></span>
+                                <span class="status-badge-text">{% if election_open %}Ouverte{% else %}Fermée{% endif %}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="actions-grid">
+                            <button class="btn btn-success" id="activateBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <span>Activer</span>
+                            </button>
+                            <button class="btn btn-warning" id="suspendBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="6" y="4" width="4" height="16"/>
+                                    <rect x="14" y="4" width="4" height="16"/>
+                                </svg>
+                                <span>Suspendre</span>
+                            </button>
+                            <button class="btn btn-danger" id="closeBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="9" y1="9" x2="15" y2="15"/>
+                                    <line x1="15" y1="9" x2="9" y2="15"/>
+                                </svg>
+                                <span>Clôturer</span>
+                            </button>
+                        </div>
+
+                        <div class="info-box">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            <p>Les modifications d'état prennent effet immédiatement et affectent tous les électeurs.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3: Statistiques -->
+                <section class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="20" x2="12" y2="10"/>
+                                <line x1="18" y1="20" x2="18" y2="4"/>
+                                <line x1="6" y1="20" x2="6" y2="16"/>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Statistiques en Direct</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="stats-list">
+                            <div class="stat-item">
+                                <div class="stat-item-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 11l3 3L22 4"/>
+                                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-item-content">
+                                    <span class="stat-item-label">Total des votes</span>
+                                    <span class="stat-item-value" id="statsVotes">{{ total_votes }}</span>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <div class="stat-item-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                                        <circle cx="8.5" cy="7" r="4"/>
+                                        <line x1="20" y1="8" x2="20" y2="14"/>
+                                        <line x1="23" y1="11" x2="17" y2="11"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-item-content">
+                                    <span class="stat-item-label">Candidat en tête</span>
+                                    <span class="stat-item-value" id="statsLeader">{{ leader|default:"--" }}</span>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <div class="stat-item-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12 6 12 12 16 14"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-item-content">
+                                    <span class="stat-item-label">Dernier vote</span>
+                                    <span class="stat-item-value" id="statsLastVote">{{ last_vote_time|default:"--" }}</span>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <div class="stat-item-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-item-content">
+                                    <span class="stat-item-label">Taux de participation</span>
+                                    <span class="stat-item-value" id="statsParticipation">{{ participation_rate }}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4: Sécurité & Intégrité -->
+                <section class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0110 0v4"/>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Sécurité & Intégrité</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="security-info">
+                            <div class="security-item">
+                                <div class="security-check">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span>Chiffrement des votes activé</span>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-check">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span>Authentification à deux facteurs</span>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-check">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                </div>
+                                <span>Audit trail complet</span>
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <button class="btn btn-lock" id="lockResultsBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0110 0v4"/>
+                            </svg>
+                            <span>Verrouiller les résultats</span>
+                        </button>
+
+                        <p class="lock-description">
+                            Le verrouillage rend les résultats définitifs et empêche toute modification ultérieure.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de confirmation -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Confirmation</h3>
+                <button class="modal-close" id="modalClose">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">Êtes-vous sûr de vouloir effectuer cette action ?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalCancel">Annuler</button>
+                <button class="btn btn-primary" id="modalConfirm">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+        </div>
+        <span class="toast-message" id="toastMessage">Action effectuée avec succès</span>
+    </div>
+    <script>
+        const electionData = {
+            status: "{{ election_open|yesno:'open,closed' }}",
+            totalVotes: {{ total_votes }},
+            leadingCandidate: "{{ leader|default:'' }}",
+            lastVoteTime: "{{ last_vote_time|date:'c'|default:'' }}",
+            isLocked: {{ election.is_locked|default:"false"|lower }}
+        };
+        const TOTAL_ELECTEURS = {{ total_electeurs|default:100 }};
+    </script>
+    <script>
+        document.getElementById("saveInfoBtn").addEventListener("click", () => {
+            const data = new FormData();
+            data.append("titre", document.getElementById("electionTitle").value);
+            data.append("description", document.getElementById("electionDescription").value);
+            data.append("date_debut", document.getElementById("startDate").value);
+            data.append("date_fin", document.getElementById("endDate").value);
+
+            fetch("{% url 'dashboard:update_election_info' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: data
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    alert("Informations de l'élection mises à jour");
+                } else {
+                    alert(res.error || "Erreur lors de la mise à jour");
+                }
+            })
+            .catch(() => alert("Erreur serveur"));
+        });
+    </script>
+    <script src="{% static 'js/dashboard/election_settings.js' %}"></script>
+</body>
+</html>

@@ -7,11 +7,11 @@ app_name = "vote"
 
 urlpatterns = [
     path("", login_view, name="login"),
-    path(
-    "inscription/idsi-2026-9X3LmQ/",
-    signup_view,
-    name="signup"
-    ),
+    # path(
+    # "inscription/idsi-2026-9X3LmQ/",
+    # signup_view,
+    # name="signup"
+    # ),
     path("qr/", qr_view, name="qr_page"),
     path("qr-inscription/", qr_view_inscription, name="qr_page_inscription"),
     path("vote/", vote_view, name="vote"),

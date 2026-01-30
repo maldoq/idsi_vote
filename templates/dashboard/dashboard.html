@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - IDSI Vote</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard/dashboard.css' %}">
+</head>
+<body>
+
+<!-- Navigation principale -->
+<nav class="main-nav">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <h1>IDSI Vote</h1>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="{% url 'dashboard:dashboard' %}" class="active">Dashboard</a></li>
+            <li><a href="{% url 'dashboard:resultats' %}">Résultats</a></li>
+            <li><a href="{% url 'dashboard:election_settings' %}">Paramètres</a></li>
+            <li><a href="{% url 'dashboard:logout' %}" class="logout">Déconnexion</a></li>
+        </ul>
+
+        <div class="election-status">
+            <span class="status-indicator {% if election_open %}status-open{% else %}status-closed{% endif %}"></span>
+            <span class="status-text">
+                {% if election_open %}
+                    Élection ouverte
+                {% else %}
+                    Élection fermée
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</nav>
+
+<!-- Contenu principal -->
+<main class="main-content">
+    <div class="content-container">
+
+        <!-- En-tête -->
+        <header class="page-header">
+            <div class="header-text">
+                <h2 class="page-title">Dashboard - Temps Réel</h2>
+                <p class="page-subtitle">{{ election_name }}</p>
+            </div>
+
+            <div class="header-meta">
+                <div class="last-update">
+                    <span class="update-label">Dernière mise à jour</span>
+                    <span class="update-time" id="lastUpdate">--:--:--</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Statistiques -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-icon">✔</div>
+                <div class="stat-content">
+                    <span class="stat-label">Total des votes</span>
+                    <span class="stat-value" id="totalVotes">{{ total_votes }}</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-content">
+                    <span class="stat-label">Nombre de candidats</span>
+                    <span class="stat-value" id="totalCandidates">{{ total_candidates }}</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-content">
+                    <span class="stat-label">Taux de participation</span>
+                    <span class="stat-value" id="participationRate">
+                        {{ participation_rate }}%
+                    </span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-content">
+                    <span class="stat-label">En tête</span>
+                    <span class="stat-value stat-leader" id="leadingCandidate">
+                        {{ leading_candidate|default:"--" }}
+                    </span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Graphiques & classement -->
+        <div class="dashboard-grid">
+
+            <!-- Histogramme -->
+            <section class="chart-section">
+                <div class="section-header">
+                    <h3 class="section-title">Distribution des votes</h3>
+                    <div class="auto-refresh">
+                        <span class="refresh-dot"></span>
+                        <span class="refresh-text">Mise à jour automatique</span>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart" id="votesChart"></div>
+                </div>
+            </section>
+
+            <!-- Top candidats -->
+            <section class="ranking-section">
+                <div class="section-header">
+                    <h3 class="section-title">Top 3 candidats</h3>
+                </div>
+
+                <div class="ranking-list" id="topCandidates">
+                    {% for candidate in top_candidates %}
+                        <div class="ranking-item">
+                            <span class="rank">{{ forloop.counter }}</span>
+                            <span class="name">{{ candidate.name }}</span>
+                            <span class="votes">{{ candidate.votes }} votes</span>
+                        </div>
+                    {% empty %}
+                        <p>Aucun vote enregistré</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+</main>
+<script>
+    const candidatesData = {{ top_candidates|safe }};
+    const TOTAL_ELECTEURS = {{ total_electeurs|add:"0" }};  // ou récupère election.total_electeurs
+</script>
+<script src="{% static 'js/dashboard/dashboard.js' %}"></script>
+</body>
+</html>

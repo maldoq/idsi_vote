@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats - IDSI Vote</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard/resultats.css' %}">
+</head>
+<body>
+    <!-- Navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>IDSI Vote</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'dashboard:dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'dashboard:resultats' %}" class="active">Résultats</a></li>
+                <li><a href="{% url 'dashboard:election_settings' %}">Paramètres</a></li>
+                <li><a href="{% url 'dashboard:logout' %}" class="logout">Déconnexion</a></li>
+            </ul>
+            <div class="election-status">
+                <span class="status-indicator {% if election_open %}status-open{% else %}status-closed{% endif %}"></span>
+                <span class="status-text">
+                    {% if election_open %}Élection ouverte{% else %}Élection clôturée{% endif %}
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <div class="content-container">
+            <!-- En-tête -->
+            <header class="page-header">
+                <div class="header-text">
+                    <h2 class="page-title">Résultats Officiels</h2>
+                    <p class="page-subtitle">{{ election.titre }}</p>
+                </div>
+                <div class="header-badge">
+                    <div class="official-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>Résultats certifiés</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Statistiques globales -->
+            <section class="global-stats">
+                <div class="stat-box">
+                    <span class="stat-box-label">Total des votes</span>
+                    <span class="stat-box-value" id="totalVotesResult">{{ total_votes }}</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-box-label">Taux de participation</span>
+                    <span class="stat-box-value" id="participationRateResult">{{ participation_rate }}%</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-box-label">Votes valides</span>
+                    <span class="stat-box-value" id="validVotesResult">{{ valid_votes }}</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-box-label">Date de clôture</span>
+                    <span class="stat-box-value stat-date" id="closureDate">{{ election.date_fin|date:"d M Y" }}</span>
+                </div>
+            </section>
+
+            <!-- Classement complet -->
+            <section class="results-section">
+                <div class="section-header">
+                    <h3 class="section-title">Classement Complet</h3>
+                    <div class="sort-info">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <polyline points="19 12 12 19 5 12"/>
+                        </svg>
+                        <span>Classé par nombre de votes</span>
+                    </div>
+                </div>
+
+                <div class="results-list" id="resultsList">
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        {% comment %} const candidatesData = {{ top_candidates|safe }}; {% endcomment %}
+        const TOTAL_ELECTEURS = {{ total_electeurs|add:"0" }};
+        const finalResults = {{finalResults|safe}};
+    </script>
+    <script src="{% static 'js/dashboard/resultats.js' %}"></script>
+</body>
+</html>
