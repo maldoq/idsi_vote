@@ -5,12 +5,6 @@ import os
 
 from django.utils.timezone import make_aware
 
-env = environ.Env(
-    DEBUG=(bool, False)
-)
-
-environ.Env.read_env()
-
 INSCRIPTION_START = make_aware(datetime(2026, 1, 20, 8, 0, 0))
 INSCRIPTION_END = make_aware(datetime(2026, 1, 30, 18, 0, 0))
 
